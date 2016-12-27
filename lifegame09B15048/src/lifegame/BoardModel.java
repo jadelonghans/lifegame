@@ -41,18 +41,32 @@ public class BoardModel {
 		System.out.println();
 	}
 	
+	// change the state of a given cell
 	public void changeCellState(int x,int y){
-		// change the state of specified cells
 		
+		boolean[][] cellForUndo = new boolean [rows][cols];
+		//copy the current cells[][] to cellForUndo
 		for(int i = 0; i<rows; i++){
 			for(int j = 0; j<cols; j++){
-				//history[]
+				cellForUndo[i][j] = cells[i][j];
 			}
 		}
+		
+		//if the history has 32 entries already, delete the oldest entry
+		if(history.size() == 32 )
+			history.remove(history.size()-1);
+
+		//add the current generation to the history list as first element
+		history.add(cellForUndo);
+		
 		//to toggle cell state between true and false
 		cells[y][x] = (cells[y][x]==true)? false : true;
 		
 		this.fireUpdate();
+	}
+	
+	public boolean isAlive(int x, int y){
+		return cells[x][y];
 	}
 	
 	public void addListener(BoardListener listener){
@@ -72,9 +86,7 @@ public class BoardModel {
 		//check in rows[][] and write in new array 'nextgen[][]'
 		for(int i=0; i<rows; i++){
 			for(int j=0; j<cols; j++){
-				if(liveOrDie(i,j) == 0)
-					nextgen[i][j] = false;
-				else nextgen[i][j] = true;
+				nextgen[i][j] = liveOrDie(i,j);
 			}
 		}
 		
@@ -91,7 +103,7 @@ public class BoardModel {
 	}
 	
 	//called by next()
-	private int liveOrDie(int x, int y){
+	private boolean liveOrDie(int x, int y){
 		
 		int count = 0;
 		
@@ -123,21 +135,21 @@ public class BoardModel {
 		//living cells need 2 or 3 alive cells to stay alive
 		if(cells[x][y] == true){
 			if(count == 2 || count == 3)
-				return 1;
+				return true;
 		}
 		
 		//dead cells need 3 alive cells to go alive
 		//(cells[x][y] == false){
 		else{			
 			if (count == 3)
-				return 1;
+				return true;
 		}
 		
 		/*living cells die when no. of cells alive >3 or <2
 		dead cells remain dead when no. of cells alive !=3
 		both case handled by return 0;
 		*/
-		return 0;	
+		return false;	
 	}
 	
 	//this method assumes the object isUndoable

@@ -28,7 +28,7 @@ public class BoardView extends JPanel{
 		int defaultPadding = 15;			//padding on left, right and top sides of gameboard
 		int bottomPadding = 40;				//padding on the bottom side of gameboard
 		
-		int boardHeight = this.getHeight() - bottomPadding -defaultPadding ;
+		int boardHeight = this.getHeight() -2*defaultPadding ; //- bottomPadding 
 		int boardWidth = this.getWidth() - 2* defaultPadding;
 		
 //		size of rectangle cells to completely fill gameboard
@@ -77,8 +77,5 @@ public class BoardView extends JPanel{
 		
 	}
 	
-	
-	// function to convert cell number into window coordinates
-	
-	//private 
+ 
 }
