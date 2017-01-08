@@ -19,7 +19,7 @@ public class Main implements Runnable{
 	
 	public void run(){
 		
-		BoardModel model = new BoardModel(10,10);
+		BoardModel model = new BoardModel(13,15);
 		//model.addListener(new ModelPrinter());
 		
 		ButtonClickListener ButtonListenerObj = new ButtonClickListener();
