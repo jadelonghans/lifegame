@@ -19,14 +19,14 @@ public class Main implements Runnable{
 	
 	public void run(){
 		
-		BoardModel model = new BoardModel(20,20);
+		BoardModel model = new BoardModel(10,10);
 		model.addListener(new ModelPrinter());
 		ButtonClickListener ButtonListenerObj = new ButtonClickListener();
 		
 		//create object of next buttons and others here. then
 		//add listeners of Next button and others here
 	
-			
+/*			
 		model.changeCellState(1, 1);
 		
 		model.changeCellState(2, 2);
@@ -41,9 +41,9 @@ public class Main implements Runnable{
 		
 		model.changeCellState(4, 4);
 		System.out.println("d0ne");
-		
+*/		
 		//create a new window
-		JFrame frame = new JFrame();
+		JFrame frame = new JFrame("Lifegame");
 		frame.setDefaultCloseOperation((JFrame.DISPOSE_ON_CLOSE));
 		
 		//create a base panel for the window
@@ -64,27 +64,41 @@ public class Main implements Runnable{
 		
 		JButton NextButton = new JButton("Next");
 		buttonpanel.add(NextButton, BorderLayout.CENTER);
-		NextButton.setActionCommand("Next");
+		NextButton.setActionCommand("next");
 		
 		JButton UndoButton = new JButton("Undo");
 		buttonpanel.add(UndoButton, BorderLayout.CENTER);
-		UndoButton.setActionCommand("Undo");
+		UndoButton.setActionCommand("undo");
 		
 		JButton NewGameButton = new JButton("New Game");
 		buttonpanel.add(NewGameButton, BorderLayout.CENTER);
-		NewGameButton.setActionCommand("New Game");
+		NewGameButton.setActionCommand("newgame");
 		
+		//passing 'model' and 'view' objects to ButtonListenerObj
 		ButtonListenerObj.setModel(model);
 		ButtonListenerObj.setView(view);
+		
+		//connecting the buttons with their actions in ButtonClickListener 
 		NextButton.addActionListener(ButtonListenerObj);
-		
-		
 		UndoButton.addActionListener(ButtonListenerObj);
 		NewGameButton.addActionListener(ButtonListenerObj);
 		
 		frame.pack();
 		frame.setVisible(true);
 		
+		//to activate/deactivate Undo Button
+		/**
+		 * needs revision: to check whether the game has just started (count only mouse inputs)
+		 * additionally, causes ArrayIndexOutOfBoundsException when Undo is not disabled when all Undo is done
+		 */
+		
+		//unlike repaint, this is executed only once
+		//to solve this problem, move this part somewhere else where update happens every time button is pressed
+		System.out.println("Hello");
+		if( !model.isUndoable()){
+			System.out.println("Undo disabled");
+			UndoButton.setEnabled(false);	
+		}
 /*	
 		for(int i=1; i<12; ++i){
 			model.next();
