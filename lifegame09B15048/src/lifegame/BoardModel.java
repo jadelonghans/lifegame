@@ -14,7 +14,7 @@ public class BoardModel {
 	public BoardModel(int c, int r){
 		cols = c;
 		rows = r;
-		cells = new boolean[cols][cols];
+		cells = new boolean[rows][cols];
 		
 		listeners = new ArrayList<BoardListener>();
 		history = new ArrayList<boolean [][]>();
