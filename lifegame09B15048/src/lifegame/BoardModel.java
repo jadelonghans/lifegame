@@ -6,6 +6,7 @@ public class BoardModel {
 	private int cols;
 	private int rows;
 	private boolean[][] cells;
+	final int MAX_HISTORY_ENTRIES = 32;	//maximum undo possible
 	
 	private	ArrayList<BoardListener> listeners;
 	private ArrayList<boolean [][]> history;
@@ -13,10 +14,9 @@ public class BoardModel {
 	public BoardModel(int c, int r){
 		cols = c;
 		rows = r;
-		cells = new boolean[rows][cols];
+		cells = new boolean[cols][cols];
 		
 		listeners = new ArrayList<BoardListener>();
-		
 		history = new ArrayList<boolean [][]>();
 	}
 	
@@ -41,7 +41,19 @@ public class BoardModel {
 		System.out.println();
 	}
 	
-	// change the state of a given cell
+	/*//for New Game button
+	public void clearAll(){
+		for(int i = 0; i<rows; i++){
+			for(int j = 0; j<cols; j++){
+				cells[i][j] = false;
+			}
+		}
+		history.clear();
+		//history = new ArrayList<boolean [][]>();
+		this.fireUpdate();
+	}*/
+	
+	// change the state of a given cell, x=col,y=row
 	public void changeCellState(int x,int y){
 		
 		boolean[][] cellForUndo = new boolean [rows][cols];
@@ -52,9 +64,9 @@ public class BoardModel {
 			}
 		}
 		
-		//if the history has 32 entries already, delete the oldest entry
-		if(history.size() == 32 )
-			history.remove(history.size()-1);
+		//if the history has maximum no. of entries already, delete the oldest entry
+		if(history.size() == MAX_HISTORY_ENTRIES )
+			history.remove(0); //history.size()-1);
 
 		//add the current generation to the history list as first element
 		history.add(cellForUndo);
@@ -91,8 +103,8 @@ public class BoardModel {
 		}
 		
 		//if the history has 32 entries already, delete the oldest entry
-		if(history.size() == 32 )
-			history.remove(history.size()-1);
+		if(history.size() == MAX_HISTORY_ENTRIES )
+			history.remove(0); //history.size()-1);
 		
 		//add the current generation to the history list as first element
 		history.add(cells);
