@@ -20,28 +20,10 @@ public class Main implements Runnable{
 	public void run(){
 		
 		BoardModel model = new BoardModel(10,10);
-		model.addListener(new ModelPrinter());
+		//model.addListener(new ModelPrinter());
+		
 		ButtonClickListener ButtonListenerObj = new ButtonClickListener();
-		
-		//create object of next buttons and others here. then
-		//add listeners of Next button and others here
-	
-/*			
-		model.changeCellState(1, 1);
-		
-		model.changeCellState(2, 2);
-		
-		model.changeCellState(0, 3);
-		
-		model.changeCellState(1, 3);
-		
-		model.changeCellState(2, 3);
-		
-		model.changeCellState(4, 4);
-		
-		model.changeCellState(4, 4);
-		System.out.println("d0ne");
-*/		
+			
 		//create a new window
 		JFrame frame = new JFrame("Lifegame");
 		frame.setDefaultCloseOperation((JFrame.DISPOSE_ON_CLOSE));
@@ -69,6 +51,7 @@ public class Main implements Runnable{
 		JButton UndoButton = new JButton("Undo");
 		buttonpanel.add(UndoButton, BorderLayout.CENTER);
 		UndoButton.setActionCommand("undo");
+		model.addListener(new UndoStateToggleListener(UndoButton));	//add a Boardlistener to enable/disable UndoButton
 		
 		JButton NewGameButton = new JButton("New Game");
 		buttonpanel.add(NewGameButton, BorderLayout.CENTER);
@@ -86,31 +69,8 @@ public class Main implements Runnable{
 		frame.pack();
 		frame.setVisible(true);
 		
-		//to activate/deactivate Undo Button
-		/**
-		 * needs revision: to check whether the game has just started (count only mouse inputs)
-		 * additionally, causes ArrayIndexOutOfBoundsException when Undo is not disabled when all Undo is done
-		 */
-		
-		//unlike repaint, this is executed only once
-		//to solve this problem, move this part somewhere else where update happens every time button is pressed
-		System.out.println("Hello");
-		if( !model.isUndoable()){
-			System.out.println("Undo disabled");
-			UndoButton.setEnabled(false);	
-		}
-/*	
-		for(int i=1; i<12; ++i){
-			model.next();
-		}
-		
-		System.out.println("Undo operation start.");
-		
-		while(model.isUndoable())
-		{
-		
-			model.undo();
-		}
-*/
+		//Disable UndoButton in the beginning
+		UndoButton.setEnabled(false);
+
 	}
 }
