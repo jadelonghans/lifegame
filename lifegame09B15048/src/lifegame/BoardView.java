@@ -17,6 +17,8 @@ public class BoardView extends JPanel implements MouseListener, MouseMotionListe
 	
 	private static final long serialVersionUID = -5739833203786797482L;
 	
+	//field for last state , for drag
+	
 	public BoardView(BoardModel model){
 		this.model = model;
 		//registering the listeners 
@@ -83,6 +85,14 @@ public class BoardView extends JPanel implements MouseListener, MouseMotionListe
 		
 	}
 
+	/**
+	 * TODO 
+	 * 1. when mouse clicked, if the cursor coordinates are within a cell boundary, change state of that cell
+	 * 2. when mouse dragged, if  last event is not button click or drag within same cell, change cell state.
+	 * 
+	 * 
+	 */
+	
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -104,7 +114,10 @@ public class BoardView extends JPanel implements MouseListener, MouseMotionListe
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		System.err.println("Pressed: " + e.getX() + " , " + e.getY());
+		//insert a method call that takes the coordinates and changes a cell state if applicable
+		model.changeCellState(1, 1);
+		this.repaint();
 	}
 
 	@Override
